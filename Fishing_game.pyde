@@ -7,11 +7,13 @@ class Game:
     def __init__(self):
         
         self.river = River(0,350)
+        self.fish = Fish()
         
         
     def display(self):
         fill(140,140,140)
         self.river.move_river()
+        self.fish.move_fish()
         
         
         
@@ -73,24 +75,20 @@ class Fish:
     def __init__(self):
   
         self.vx = random.randint(1, 10)
-        self.x1 = x1
-        self.x2 = x2
+        self.x = random.randint(1130, 1140)
+        self.y = random.randint(350,690)
+        # self.x1 = 
+        # self.x2 = 
+        
+        
     
-    def update(self):
-        self.gravity()
-        
-        if self.x < self.x1:
-            self.direction = RIGHT
-            self.vx *= -1
-        elif self.x > self.x2:
-            self.direction = LEFT
-            self.vx *= -1
-        
-        if frameCount % 5 == 0:
-            self.frame = (self.frame + 1) % self.slices
+    def move_fish(self):
+        # img_num = random.randint(0,2)
+        img_num = 0
+        image(loadImage(path + "/fish_image/"+str(img_num)+".jpg"),self.x,self.y,random.randint(40,70), random.randint(40,70))       
             
-        self.y += self.vy
-        self.x += self.vx
+        self.y -= 0
+        self.x -= 5
     
     
     
