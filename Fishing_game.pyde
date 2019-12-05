@@ -21,10 +21,17 @@ class River:
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.img_num = 0
-        # self.img = loadImage("C:/Users/310ch/Desktop/Project_CS/Fishing_game/images/4.jpg")
-        self.img = loadImage(path + "/images/"+str(self.img_num)+".jpg")
-        self.img_1 = loadImage(path + "/images/4.jpg")
+        # self.img_num = random.randint(0,7)
+        self.img_num = 7
+        # self.img_num1 = 7
+        
+       
+    
+        
+        # self.img = loadImage(path + "/images/"+str(self.img_num)+".jpg")
+        # self.img1 = loadImage(path + "/images/"+str(self.img_num1)+".jpg")
+        
+   
         
         
         
@@ -32,11 +39,20 @@ class River:
         
     def move_river(self):
         
-        image(self.img,self.x,self.y,1100,380)
-        image(self.img_1,self.x+1100,self.y,1100,380)
-        self.x -=20
-        if self.x == -1100:
+        
+        # image(self.img,self.x,self.y,1100,380)
+        # image(self.img1,self.x+1100,self.y,1100,380)
+        
+        # image(self.img,self.x,self.y,1100,380)
+        image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1100,380)
+        image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x+1100,self.y,1100,380)
+        
+        self.x -=30
+        if self.x <= -1100:
             self.x = 0
+            self.img_num = random.randint(0,7)
+            # self.img_num1 = random.randint(0,7)
+        
         
         
     
