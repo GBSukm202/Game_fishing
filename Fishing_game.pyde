@@ -52,6 +52,15 @@ class River:
             self.x = 0
             self.img_num = random.randint(0,7)
             # self.img_num1 = random.randint(0,7)
+
+
+    
+    
+    
+    
+    
+    
+    
         
         
         
@@ -60,7 +69,28 @@ class River:
     
     
     
-# class Fish:
+class Fish:
+    def __init__(self):
+  
+        self.vx = random.randint(1, 10)
+        self.x1 = x1
+        self.x2 = x2
+    
+    def update(self):
+        self.gravity()
+        
+        if self.x < self.x1:
+            self.direction = RIGHT
+            self.vx *= -1
+        elif self.x > self.x2:
+            self.direction = LEFT
+            self.vx *= -1
+        
+        if frameCount % 5 == 0:
+            self.frame = (self.frame + 1) % self.slices
+            
+        self.y += self.vy
+        self.x += self.vx
     
     
     
