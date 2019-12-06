@@ -18,14 +18,20 @@ class Game:
         # self.background_sound.play()
         self.boat = Boat()
         self.fish = []
+        self.fish1 = []
         for i in range(10): 
-            self.fish.append(Fish(random.randint(1100,4000),random.randint(350,700)))  
+            self.fish.append(Fish(random.randint(1100,4000),random.randint(350,700))) 
+            
+        for i in range(10): 
+            self.fish1.append(Fish(random.randint(-4000,0),random.randint(350,700))) 
         
     def display(self):
         self.river.move_river()
         self.boat.move_boat()
         for fish in self.fish:
             fish.move_fish()
+        for fish in self.fish1:
+            fish.move_fish1()
         
         
         
@@ -103,7 +109,7 @@ class Fish:
         self.x = x
         self.y = y
         self.vx = random.randint(0,15)
-        # self.vy = random.randint(-3,3)
+        self.vy = random.randint(0,15)
         self.img = loadImage(path + "/fish_image/9.png")
         
         
@@ -112,7 +118,24 @@ class Fish:
         
         image(self.img, self.x,self.y,random.randint(45,70),random.randint(45,65))
         self.x -= self.vx
-        # self.y -= self.vy
+        if self.y <=370:
+            self.y += self.vy
+        elif self.y >= 700 :
+            self.y -= self.vy
+        else:
+            self.y += random.randint(0,15)
+        
+    def move_fish1(self):
+        
+        image(self.img, self.x,self.y,random.randint(45,70),random.randint(45,65),900,0,0,900)
+        self.x += self.vx
+        if self.y <=370:
+            self.y += self.vy
+        elif self.y >= 700 :
+            self.y -= self.vy
+        else:
+            self.y += random.randint(0,15)
+            
         
     
     
