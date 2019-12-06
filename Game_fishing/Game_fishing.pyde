@@ -13,9 +13,9 @@ class Game:
     
         
         self.river = River(0,350) 
-        self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
-        self.background_sound.rewind()
-        self.background_sound.play()
+        # self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
+        # self.background_sound.rewind()
+        # self.background_sound.play()
         self.boat = Boat()   
         
     def display(self):
@@ -40,7 +40,9 @@ class River:
         
     def move_river(self):
         
-        
+        self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
+        self.background_sound.rewind()
+        self.background_sound.play()
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1100,380)
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x+1100,self.y,1100,380)
         
