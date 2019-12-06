@@ -16,11 +16,16 @@ class Game:
         # self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
         # self.background_sound.rewind()
         # self.background_sound.play()
-        self.boat = Boat()   
+        self.boat = Boat()
+        self.fish = []
+        for i in range(10): 
+            self.fish.append(Fish(random.randint(1100,4000),random.randint(350,700)))  
         
     def display(self):
         self.river.move_river()
         self.boat.move_boat()
+        for fish in self.fish:
+            fish.move_fish()
         
         
         
@@ -92,13 +97,23 @@ class Boat:
                         
                                         
         
-# class Fish:
+class Fish:
     
-#     def __init__(self):
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+        self.vx = random.randint(0,15)
+        # self.vy = random.randint(-3,3)
+        self.img = loadImage(path + "/fish_image/9.png")
         
         
         
-#     def move_fish(self):
+    def move_fish(self):
+        
+        image(self.img, self.x,self.y,random.randint(45,70),random.randint(45,65))
+        self.x -= self.vx
+        # self.y -= self.vy
+        
     
     
 
