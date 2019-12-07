@@ -70,9 +70,10 @@ class River:
         
 class Boat:
     def __init__(self):
-        self.img = loadImage(path +"/images/fisherman.jpg")
+        self.img = loadImage(path +"/images/fisherman.png")
         self.key_handler = {LEFT: False, RIGHT:True}
         self.vx = 10
+        self.vy = 0
         self.x = 400
         self.y = 200
         
@@ -84,10 +85,12 @@ class Boat:
         
         if self.key_handler[LEFT]:
             self.vx = -10
+            self.vy = random.randint(-3,3)
             self.direction = LEFT
-            image(self.img,self.x,self.y,200,150)
+            image(self.img,self.x,self.y,200,170)
         elif self.key_handler[RIGHT]:
             self.vx = 10
+            self.vy = random.randint(-3,3)
             self.direction = RIGHT
             image(self.img,self.x,self.y,300,250,800,0,0,800)
         else:
@@ -95,6 +98,7 @@ class Boat:
             
         
         self.x += self.vx
+        self.y += self.vy
     
 
     
@@ -131,7 +135,7 @@ class Fish:
         self.x += self.vx
         if self.y <=370:
             self.y += self.vy
-        elif self.y >= 700 :
+        elif self.y >= 600 :
             self.y -= self.vy
         else:
             self.y += random.randint(0,15)
