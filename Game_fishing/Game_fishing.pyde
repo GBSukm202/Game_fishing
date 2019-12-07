@@ -17,23 +17,26 @@ class Game:
         # self.background_sound.rewind()
         # self.background_sound.play()
         self.boat = Boat()   
-        self.Background = Background(0,0)
         
     def display(self):
-        self.Background.show_background
+        self.Background.show_background()
         self.river.move_river()
         self.boat.move_boat()
- 
+
         
 class Background: 
     def __init__(self,x,y):
         self.x = x
         self.y = y 
+        self.img_num = 9  
     
     def show_background(self):
-        image(loadImage(path + "/images/8.jpg"),self.x,self.y,1920,1080)    
-        
-        
+        image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1100,380)
+        image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x+1100,self.y,1100,380)
+        self.x -= 200
+        if self.x <= -1100:
+            self.x = 0
+            self.img_num = random.randint(9,12)
 
 class River:
     def __init__(self,x,y):
@@ -66,7 +69,7 @@ class River:
         
 class Boat:
     def __init__(self):
-        self.img = loadImage(path +"/images/fisherman.jpg")
+        self.img = loadImage(path +"/images/fisherman.png")
         self.key_handler = {LEFT: False, RIGHT:True}
         self.vx = 10
         self.x = 400
