@@ -11,20 +11,27 @@ class Game:
     
     
     
-        
+        self.Background = Background(0,0)
         self.river = River(0,350) 
         # self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
         # self.background_sound.rewind()
         # self.background_sound.play()
         self.boat = Boat()   
+        self.Background = Background(0,0)
         
     def display(self):
+        self.Background.show_background
         self.river.move_river()
         self.boat.move_boat()
+ 
         
-        
-        
-        
+class Background: 
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y 
+    
+    def show_background(self):
+        image(loadImage(path + "/images/8.jpg"),self.x,self.y,1920,1080)    
         
         
 
@@ -125,7 +132,8 @@ def keyReleased():
         game.boat.key_handler[LEFT] = False
     # elif keyCode == RIGHT:
         # game.boat.key_handler[RIGHT] = False
-           
+
+
                 
  
         
