@@ -17,11 +17,13 @@ class Game:
         # self.background_sound.rewind()
         # self.background_sound.play()
         self.boat = Boat()   
+        self.hook = Hook(100,100,1080,1080)
         
     def display(self):
         self.Background.show_background()
         self.river.move_river()
         self.boat.move_boat()
+        self.hook.move()
 
         
 class Background: 
@@ -62,7 +64,37 @@ class River:
             self.img_num = random.randint(0,7)
             
 
+class Hook:
+    def __init__(self,x,y,w,h):
+        self.x = x
+        self.y = y
+        self.w = 1000
+        self.h = 1080
+        self.vy = 10     
+        self.status = True
+        self.img = loadImage(path + "/images/hook.jpg")
         
+    
+    def move(self):  
+        self.y = self.y +self.vy
+        if self.vy == 10:
+            image(self.img, self.x, self.y,100,100)
+        if self.y >3000:
+            self.vy = -10
+            self.status = False
+
+
+
+class Part: # The tails of the snake 
+    def __init__(self,x,y,e,c):
+        self.x = x
+        self.y = y
+        self.e = e
+        self.c = c
+        
+    def display(self):
+        fill(80, 153, 32)
+        circle(self.x*30, self.y*30, 30)
         
         
     
@@ -128,7 +160,8 @@ def keyPressed():
         game.boat.key_handler[LEFT] = True
     # elif keyCode == RIGHT:
         # game.boat.key_handler[RIGHT] = True
-    
+    if keyCode == DOWN:
+        game.Hook.vy = 10
         
 def keyReleased():
     if keyCode == LEFT:
