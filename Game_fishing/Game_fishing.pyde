@@ -69,21 +69,19 @@ class Hook:
         self.x = x
         self.y = y
         self.vy = 0    
-        self.img = loadImage(path + "/images/hook.jpg")
+        self.img = loadImage(path + "/images/hook.png")
+        self.Hook_N = 0
         
     
     def move(self):  
         if self.vy == 0:
-            image(self.img, game.boat.x, game.boat.y,100,100)
+            image(self.img, game.boat.x+235, game.boat.y+12,100,100)
         if self.vy == 10 or self.vy == -10:
             self.y = self.y + self.vy
-            image(self.img, game.boat.x, self.y,100,100)
-            if self.y//100 >2: 
-                image(loadImage(path + "/images/hook_line.jpg"),game.boat.x,self.y-100,100,100)
-            if self.y//100 >3:
-                image(loadImage(path + "/images/hook_line.jpg"),game.boat.x,self.y-200,100,100)
-            if self.y//100 >4:
-                image(loadImage(path + "/images/hook_line.jpg"),game.boat.x,self.y-300,100,100)
+            image(self.img, game.boat.x+235, self.y+12,100,100)
+            self.Hook_N = int(self.vy-280//10)
+            for a in range(self.Hook_N,1):
+                image(loadImage(path + "/images/hook_line.png"),game.boat.x+235,self.y-10*a+12,10,10)
         if self.y == 580:
             self.vy = -10
         if self.y == 200:
