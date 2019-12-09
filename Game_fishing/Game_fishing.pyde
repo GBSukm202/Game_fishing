@@ -70,15 +70,15 @@ class Hook:
         self.y = y
         self.w = 1000
         self.h = 1080
-        self.vy = 10     
-        self.status = True
+        self.vy = 0     
         self.img = loadImage(path + "/images/hook.jpg")
         
     
     def move(self):  
-        self.y = self.y +self.vy
-        if self.vy == 10:
-            image(self.img, self.x, self.y,100,100)
+            image(self.img, game.boat.x, game.boat.y,100,100)
+        if self.status == True:
+            self.y = self.y + 10
+            image(self.img, game.boat.x, game.boat.y,100,100)
         if self.y >3000:
             self.vy = -10
             self.status = False
@@ -161,7 +161,7 @@ def keyPressed():
     # elif keyCode == RIGHT:
         # game.boat.key_handler[RIGHT] = True
     if keyCode == DOWN:
-        game.Hook.vy = 10
+        game.hook.status = True 
         
 def keyReleased():
     if keyCode == LEFT:
