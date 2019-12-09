@@ -78,11 +78,17 @@ class Hook:
         if self.vy == 10 or self.vy == -10:
             self.y = self.y + self.vy
             image(self.img, game.boat.x, self.y,100,100)
-            game.boat.vx = 0 # Freeze the boat when hook is deployed 
+            if self.y//100 >2: 
+                image(loadImage(path + "/images/hook_line.jpg"),game.boat.x,self.y-100,100,100)
+            if self.y//100 >3:
+                image(loadImage(path + "/images/hook_line.jpg"),game.boat.x,self.y-200,100,100)
+            if self.y//100 >4:
+                image(loadImage(path + "/images/hook_line.jpg"),game.boat.x,self.y-300,100,100)
         if self.y == 580:
             self.vy = -10
         if self.y == 200:
             self.vy = 0
+        
 
 
 
