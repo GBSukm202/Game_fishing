@@ -75,33 +75,31 @@ class Hook:
     
     def move(self):  
         if self.vy == 0:
-            image(self.img, game.boat.x+235, game.boat.y+12,100,100)
+            if game.boat.vx >=0:
+                image(self.img, game.boat.x+235, game.boat.y+12,100,100)
+            if game.boat.vx <0:
+                image(self.img,game.boat.x-40,game.boat.y+12,100,100)
+                            
         if self.vy == 10 or self.vy == -10:
             self.y = self.y + self.vy
-            image(self.img, game.boat.x+235, self.y+12,100,100)
-            self.Hook_N = int(self.vy-280//10)
-            for a in range(self.Hook_N,1):
-                image(loadImage(path + "/images/hook_line.png"),game.boat.x+235,self.y-10*a+12,10,10)
+ 
+            self.Hook_N = int((self.y-208)//1)
+            if game.boat.vx >0:
+                image(self.img, game.boat.x+235, self.y+12,100,100)
+                for a in range(self.Hook_N):
+                    image(loadImage(path + "/images/hook_line.png"),game.boat.x+284,self.y-1*a+10,10,10)
+            elif game.boat.vx < 0 :
+                image(self.img,game.boat.x-58, self.y+12,100,100)
+                for a in range(self.Hook_N):
+                    image(loadImage(path + "/images/hook_line.png"),game.boat.x-10,self.y-1*a+1,10,10)
+                
+                
         if self.y == 580:
             self.vy = -10
         if self.y == 200:
             self.vy = 0
         
 
-
-
-class Part: # The tails of the snake 
-    def __init__(self,x,y,e,c):
-        self.x = x
-        self.y = y
-        self.e = e
-        self.c = c
-        
-    def display(self):
-        fill(80, 153, 32)
-        circle(self.x*30, self.y*30, 30)
-        
-        
     
         
 class Boat:
@@ -122,7 +120,6 @@ class Boat:
             if self.vx < 0:
                 image(self.img,self.x,self.y,200,150)
                 self.vx =-0.01
-            image(self.img,self.x,self.y,300,250,800,0,0,800)
             
         elif self.key_handler[LEFT]:
             self.vx = -10
