@@ -18,19 +18,30 @@ class Game:
         # self.background_sound.play()
         self.boat = Boat()   
         self.hook = Hook(self.boat.x,self.boat.y)
+        self.fish = []
+        self.fish1 = []
+        for i in range(10): 
+            self.fish.append(Fish(random.randint(1100,2000),random.randint(350,700),loadImage(path + "/fish_image/"+str(random.randint(0,12))+".png"))) 
+            
+        for i in range(10): 
+            self.fish1.append(Fish(random.randint(-2000,0),random.randint(350,700),loadImage(path + "/fish_image/"+str(random.randint(0,12))+".png")))
         
     def display(self):
         self.Background.show_background()
         self.river.move_river()
         self.boat.move_boat()
         self.hook.move()
+        for fish in self.fish:
+            fish.move_fish()
+        for fish in self.fish1:
+            fish.move_fish1()
 
         
 class Background: 
     def __init__(self,x,y):
         self.x = x
         self.y = y 
-        self.img_num = 9  
+        self.img_num = 4  
     
     def show_background(self):
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1100,380)
@@ -52,9 +63,9 @@ class River:
         
     def move_river(self):
         
-        self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
-        self.background_sound.rewind()
-        self.background_sound.play()
+        # self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
+        # self.background_sound.rewind()
+        # self.background_sound.play()
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1100,380)
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x+1100,self.y,1100,380)
         
@@ -95,7 +106,7 @@ class Hook:
                 
                 
         if self.y == 580:
-            self.vy = -10
+            self.vy = -20
         if self.y == 200:
             self.vy = 0
         
@@ -113,20 +124,25 @@ class Boat:
     def move_boat(self):
         
         # Jeff added function 
-        if game.hook.vy != 0: # STOP the boat when hook is deployed
-            if self.vx > 0:
-                image(self.img,self.x,self.y,300,250,800,0,0,800)
-                self.vx = 0.01
-            if self.vx < 0:
-                image(self.img,self.x,self.y,200,150)
-                self.vx =-0.01
+        # if game.hook.vy != 0: # STOP the boat when hook is deployed , no need to stop the boat
+        if self.vx > 0:
+            image(self.img,self.x,self.y,300,250,800,0,0,800)
+            self.vx = 0.01
+            self.vy = random.randint(-3,3)
+        if self.vx < 0:
+            image(self.img,self.x,self.y,200,150)
+            self.vx =-0.01
+            self.vy = random.randint(-3,3)
             
-        elif self.key_handler[LEFT]:
+        if self.key_handler[LEFT]:
             self.vx = -10
+            self.vy = random.randint(-3,3)
+            
             self.direction = LEFT
             image(self.img,self.x,self.y,200,150)
         elif self.key_handler[RIGHT]:
             self.vx = 10
+            self.vy = random.randint(-3,3)
             self.direction = RIGHT
             image(self.img,self.x,self.y,300,250,800,0,0,800)
         else:
@@ -142,15 +158,38 @@ class Boat:
                         
                                         
         
-# class Fish:
+class Fish:
     
-#     def __init__(self):
+    def __init__(self,x,y,img):
+        self.x = x
+        self.y = y
+        self.vx = random.randint(0,15)
+        self.vy = random.randint(0,15)
+        self.img = img
         
         
         
-#     def move_fish(self):
-    
-    
+    def move_fish(self):
+        
+        image(self.img, self.x,self.y,random.randint(60,90),random.randint(45,65))
+        self.x -= self.vx
+        if self.y <=370:
+            self.y += self.vy
+        elif self.y >= 600 :
+            self.y -= self.vy
+        else:
+            self.y += random.randint(0,15)
+        
+    def move_fish1(self):
+        
+        image(self.img, self.x,self.y,random.randint(60,90),random.randint(45,65),900,0,0,900)
+        self.x += self.vx
+        if self.y <=370:
+            self.y += self.vy
+        elif self.y >= 600 :
+            self.y -= self.vy
+        else:
+            self.y += random.randint(0,15)
 
 
 game = Game()
