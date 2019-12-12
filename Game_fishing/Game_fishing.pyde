@@ -3,7 +3,9 @@ import os, random
 path = os.getcwd()
 player = Minim(this)
 
-
+# Access to the hook Y 
+# game.hook.x
+# game.hook.y
 
 class Game:
     def __init__(self):
@@ -85,30 +87,35 @@ class Hook:
         
     
     def move(self):  
+        # Display of the hook if it is not used 
         if self.vy == 0:
             if game.boat.vx >=0:
-                image(self.img, game.boat.x+235, game.boat.y+12,100,100)
+                image(self.img, game.boat.x+264, game.boat.y+25,40,40)
             if game.boat.vx <0:
-                image(self.img,game.boat.x-40,game.boat.y+12,100,100)
-                            
-        if self.vy == 10 or self.vy == -10:
+                image(self.img,game.boat.x-40,game.boat.y+12,40,40)
+        
+        # Display of the hook if it is used                     
+        if self.vy == 30 or self.vy == -30:
             self.y = self.y + self.vy
  
             self.Hook_N = int((self.y-208)//1)
             if game.boat.vx >0:
-                image(self.img, game.boat.x+235, self.y+12,100,100)
+                image(self.img, game.boat.x+264, self.y+20,40,40) # Hook 
                 for a in range(self.Hook_N):
-                    image(loadImage(path + "/images/hook_line.png"),game.boat.x+284,self.y-1*a+10,10,10)
+                    image(loadImage(path + "/images/hook_line.png"),game.boat.x+284,self.y-1*a+20,5,5) # Parts (line) of the hook 
             elif game.boat.vx < 0 :
-                image(self.img,game.boat.x-58, self.y+12,100,100)
+                image(self.img,game.boat.x-58, self.y+12,40,40) # Hook 
                 for a in range(self.Hook_N):
-                    image(loadImage(path + "/images/hook_line.png"),game.boat.x-10,self.y-1*a+1,10,10)
+                    image(loadImage(path + "/images/hook_line.png"),game.boat.x-40,self.y-1*a+15,5,5) # Parts (line) of the hook 
                 
                 
         if self.y == 580:
-            self.vy = -20
-        if self.y == 200:
+            self.vy = -30
+        if self.y == game.boat.y+25:
             self.vy = 0
+            
+       
+            
         
 
     
@@ -208,15 +215,22 @@ def keyPressed():
     # elif keyCode == RIGHT:
         # game.boat.key_handler[RIGHT] = True
     if keyCode == DOWN:
-        game.hook.vy = 10
+        game.hook.vy = 30
     if keyCode == UP:
-        game.hook.vy = -10 
+        if game.hook.y <= game.boat.y+25:
+            pass
+        else:
+            game.hook.vy = -30 
         
 def keyReleased():
     if keyCode == LEFT:
         game.boat.key_handler[LEFT] = False
     # elif keyCode == RIGHT:
         # game.boat.key_handler[RIGHT] = False
+    # if keyCode == UP:
+    #     game.boat.key_handler[LEFT] = False
+    # elif keyCode == DOWN:
+    #     game.boat.key_handler[RIGHT] = False
 
 
                 
