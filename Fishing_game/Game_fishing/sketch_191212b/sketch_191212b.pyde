@@ -12,6 +12,7 @@ class Game:
         self.cnt = 0 
         self.fish = []
         self.score_fish = loadImage(path + "/fish_image/"+str(random.randint(0,10))+".png")
+        self.final_fish = loadImage(path + "/fish_image/final_background.jpg")
         self.snake = []
         # while self.alive:
         for i in range(3):
@@ -60,6 +61,23 @@ class Game:
                 snake.vx = 0
                 self.boat.vm = 0
                 self.boat.boat_move = 0
+                # self.key_handler = {LEFT:True,RIGHT:False,UP:False,DOWN:False}
+    def final_background(self):
+        image(self.final_fish,0,0,1200,700)
+        # fill(130,45,210)
+        # textSize(40)
+        # text("Aahhhh! I am alive.", 30,500)
+        fill(190,10,100)
+        textSize(100)
+        text("Game Over", 320,200)
+        fill(0,0,0)
+        textSize(50)
+        "{0} : {1}".format(image(self.score_fish,475,10,100,100),text(str(self.cnt),590,90))
+        
+        fill(120,26,180)
+        textSize(70)
+        text("Play Again", 440,350)
+        
 
                 
     def fish_eat(self):
@@ -104,21 +122,24 @@ class Game:
         
         
     def display(self):
+        if self.alive == False:
+            self.final_background()
+        else:
         
-        # self.background_img.show_background()
-        # self.river.move_river()
-    
-        self.boat.move_boat()
-        for fish in self.fish:
-            fish.move_fish()
-        for snake in self.snake:
-            snake.move_fish()
-        self.fish_eat()
-        # image(self.score_fish,1000,40,100,100)
-        fill(140,23,190)
-        textSize(50)
-        "{0} : {1}".format(image(self.score_fish,1000,40,100,100),text(str(self.cnt),1120,100))
-        self.snake_kill()
+            # self.background_img.show_background()
+            # self.river.move_river()
+        
+            self.boat.move_boat()
+            for fish in self.fish:
+                fish.move_fish()
+            for snake in self.snake:
+                snake.move_fish()
+            self.fish_eat()
+            # image(self.score_fish,1000,40,100,100)
+            fill(140,23,190)
+            textSize(50)
+            "{0} : {1}".format(image(self.score_fish,1000,40,100,100),text(str(self.cnt),1120,100))
+            self.snake_kill()
             
 
     
