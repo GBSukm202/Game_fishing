@@ -106,7 +106,7 @@ class Game:
     def display(self):
         
         # self.background_img.show_background()
-        self.river.move_river()
+        # self.river.move_river()
     
         self.boat.move_boat()
         for fish in self.fish:
