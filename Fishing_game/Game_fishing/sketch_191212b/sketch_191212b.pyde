@@ -4,36 +4,86 @@ path = os.getcwd()
 
 class Game:
     def __init__(self):
+        
+        self.game_stop = True
+        self.background_img = Background(0,0)
         self.river = River()
         self.boat = Boat()
         self.fish = []
-        self.fish_1 = []
+        # self.fish_1 = []
+        self.snake = []
+        for i in range(12):
+            self.snake.append(Fish(random.randint(0,2000)+800,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(1,2))+".png")))
+        
         
     
-        for i in range(6):
-            self.fish.append(Fish(random.randint(0,2000)+1100,random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,12))+".png")))
+        for i in range(12):
+            self.fish.append(Fish(random.randint(0,2000)+1100,random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,10))+".png")))
             
+    # def fish_eat(self):
+    #     cnt = 0
+    #     for fish in self.fish:
+    #         m = int(self.boat.x)
+    #         n = int(self.boat.m)
+    #         i = (int(fish.x) + int(fish.r))//2
+    #         j = (int(fish.y) + int(fish.v))//2
+        
+    #         print(m,n,i,j)
+    #         distance = ((m - i)**2 + (n - j)**2)**0.5
+    #         if distance <= 20:
+    #             cnt += 1
+    #             fish.vx = 0
+                
+    #             fish.x = m 
+    #             fish.y = n
+    #             if  fish.y <= 210:
+    #                 fish.x = (cnt*100)
+    #                 fish.y = 0 
+    #                 fish.r = 50
+    #                 fish.v = 50
     def fish_eat(self):
         cnt = 0
+        for snake in self.snake:
+            m = int(self.boat.a)
+            n = int(self.boat.b)
+            # i = (int(fish.x) + int(fish.r))//2
+            # j = (int(fish.y) + int(fish.v))//2
+            i = int(snake.x)
+            j = int(snake.y)
+        
+            # print(m,n,i,j)
+            distance_1 = (m - i)**2 
+            distance_2 = (n - j)**2
+            if distance_1 <= 400 and distance_2 <= 400:
+                self.game_stop = False
+            
+        
         for fish in self.fish:
-            m = int(self.boat.x)
-            n = int(self.boat.m)
+            m = int(self.boat.a)
+            n = int(self.boat.b)
+            # i = (int(fish.x) + int(fish.r))//2
+            # j = (int(fish.y) + int(fish.v))//2
             i = int(fish.x)
             j = int(fish.y)
         
             print(m,n,i,j)
-            distance = ((m - i)**2 + (n - j)**2)**0.5
-            if distance <= 30:
+            distance_1 = (m - i)**2 
+            distance_2 = (n - j)**2
+            if distance_1 <= 400 and distance_2 <= 400:
                 cnt += 1
                 fish.vx = 0
+                fish.x = (cnt*100)
+                fish.y = 0 
+                fish.r = 20
+                fish.v = 20
                 
-                fish.x = m 
-                fish.y = n
-                if  n <= 210:
-                    fish.x = (cnt*30)
+                fish.x = self.boat.a
+                fish.y = self.boat.b
+                if  fish.y <= 250:
+                    fish.x = (cnt*100)
                     fish.y = 0 
-                    fish.r = 50
-                    fish.v = 50
+                    fish.r = 20
+                    fish.v = 20
             
         
         
@@ -41,13 +91,15 @@ class Game:
         
         
     def display(self):
+        
+        # self.background_img.show_background()
         # self.river.move_river()
     
         self.boat.move_boat()
         for fish in self.fish:
             fish.move_fish()
-        for fish_1 in self.fish_1:
-            fish.move_fish()
+        for snake in self.snake:
+            snake.move_fish()
         self.fish_eat()
             
 
@@ -75,7 +127,7 @@ class River:
         self.x -= 40
         if self.x <= -1100:
             self.x = 0
-            # self.img_num = random.randint(0,7)
+            self.img_num = random.randint(0,7)
            
 class Boat:
     def __init__(self):
@@ -86,6 +138,8 @@ class Boat:
         self.key_handler = {LEFT:False,RIGHT:True,UP:False,DOWN:False}
         self.m = 210
         self.vm = 10
+        self.a = 0
+        self.b = 0
         # self.n = 210
         # self.kill = False
 
@@ -114,7 +168,8 @@ class Boat:
                     self.m = self.m
                     
                 # image(self.img,0,210,150,150)
-            
+            self.a = self.x-20
+            self.b = self.m +24
             
             # self.y += random.randint(-3,3)
         elif self.key_handler[RIGHT]:
@@ -141,6 +196,22 @@ class Boat:
                     self.m -= self.vm
                 else:
                     self.m = self.m
+            self.a = self.x+130
+            self.b = self.m +28
+
+class Background: 
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y 
+        self.img_num = 9 
+    
+    def show_background(self):
+        image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1200,380)
+        image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x+1200,self.y,1200,380)
+        self.x -= 50
+        if self.x <= -1200:
+            self.x = 0
+            self.img_num = random.randint(9,12)
                 
     
     
@@ -161,6 +232,7 @@ class Boat:
             
             # self.x +=5
             # self.y += random.randint(-3,3)
+
 
 class Fish:
     def __init__(self,x,y,img):
@@ -232,8 +304,10 @@ def keyReleased():
         
 def mouseClicked():
     global game
+    if game.game_stop == False:
+        game = Game()
     
-    game.boat.kill = True
+
     
     
     
