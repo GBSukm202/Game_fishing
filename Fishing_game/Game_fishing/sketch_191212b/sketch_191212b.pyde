@@ -6,14 +6,16 @@ class Game:
     def __init__(self):
         
         self.alive = True
+    
         self.background_img = Background(0,0)
         self.river = River()
         self.boat = Boat()
+        # self.hook = Hook()
         self.cnt = 0 
         self.fish = []
         self.fish_opposite = []
         self.score_fish = loadImage(path + "/fish_image/"+str(random.randint(0,10))+".png")
-        self.final_fish = loadImage(path + "/fish_image/final.jpg")
+        self.final_fish = loadImage(path + "/fish_image/final_background.jpg")
         self.snake = []
         # while self.alive:
         for i in range(3):
@@ -21,10 +23,10 @@ class Game:
         
         
     
-        for i in range(12):
-            self.fish.append(Fish(random.randint(0,2000)+1100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image_1/"+str(random.randint(0,9))+".png")))
+        for i in range(20):
+            self.fish.append(Fish(random.randint(0,2000)+1100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,9))+".png")))
     
-            self.fish_opposite.append(Fish(random.randint(-2000,0)-100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image_1/"+str(random.randint(0,9))+".png")))
+            self.fish_opposite.append(Fish(random.randint(-2000,0)-100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,9))+".png")))
             
     # def fish_eat(self):
     #     cnt = 0
@@ -158,9 +160,11 @@ class Game:
         if self.alive == False:
             self.final_background()
         else:
+            # self.hook.move()
         
             # self.background_img.show_background()
-            # self.river.move_river()
+            self.river.move_river()
+        
         
             self.boat.move_boat()
             for fish in self.fish:
@@ -207,6 +211,11 @@ class Boat:
     def __init__(self):
         self.img = loadImage(path +"/images/fisherman.png")
         self.img1 = loadImage(path+"/images/hook.png")
+        self.hook_line = loadImage(path+"/images/hook_line.png")
+        self.hook_growth = 210
+        self.hook_x = 10
+        self.hook_size = 0
+        self.hm = 2
         self.x = 400
         self.y = 210
         self.key_handler = {LEFT:False,RIGHT:True,UP:False,DOWN:False}
@@ -215,32 +224,71 @@ class Boat:
         self.boat_move = 5
         self.a = 0
         self.b = 0
+        self.rope_n = 0
+        
         # self.n = 210
         # self.kill = False
+    # def hook_move(self):
+        # for i in range(1,5):
+        #     image(self.hook_line,self.x-20,i*40,4,40)
+        #     if self.key_handler[DOWN] == False:
+        #         # break 
+        
+    
 
     def move_boat(self):
+        # self.hook_move()
+        # image(self.hook_line,self.x-20,self.m+24)
+    
     
         
         if self.key_handler[LEFT]:
-            if self.x >= 5:
+            if self.x >= 10:
                 image(self.img,self.x,self.y,150,150)
+                line(self.x,234,self.x,self.hook_growth+35)
+                stroke(204,153,0)
+                strokeWeight(2.5)
                 image(self.img1,self.x-20,self.m+24,40,40)
+                # image(self.img1,self.x-20,self.m+24,40,40)
+                # image(self.hook_line,self.x-20,self.m+24,self.hook_x,self.hook_growth)
                 self.x -= self.boat_move
                 if self.key_handler[DOWN] and self.m < 600:
+                    # image(self.hook_line,self.x-20,self.m+24,self.hook_x,self.hook_growth)
+                    # self.hook_x = -16
+                    
                     self.m += self.vm
+                    self.hook_growth += self.vm
                 elif self.key_handler[UP] and self.m > 210:
+                    # self.hook_x = 4
+                    
                     self.m -= self.vm
+                    self.hook_growth -= self.vm
                 else:
                     self.m = self.m
+                    # self.hook_x = 0
+                    # self.hook_growth = 0
             else:
                 image(self.img,self.x,self.y,150,150)
+                
+                # image(self.hook_line,self.x-20,self.m+24,self.hook_x,self.hook_growth)
+                line(self.x,234,self.x,self.hook_growth+35)
+                stroke(204,153,0)
+                strokeWeight(2.5)
                 image(self.img1,self.x-20,self.m+24,40,40)
                 if self.key_handler[DOWN] and self.m < 600:
+                    
+                    # self.hook_x = 4
+                    
                     self.m += self.vm
+                    self.hook_growth += self.vm
                 elif self.key_handler[UP] and self.m > 210:
+                    # self.hook_x = 4
+                    self.hook_growth -= self.vm
                     self.m -= self.vm
                 else:
                     self.m = self.m
+                    # self.hook_x = 0
+                    # self.hook_growth = 0
                     
                 # image(self.img,0,210,150,150)
             self.a = self.x-20
@@ -251,28 +299,100 @@ class Boat:
             if self.x <= 1000:
                 image(self.img,self.x,self.y+7,150,150,503,0,0,537)
                 
+                
+                # image(self.hook_line,self.x+146,self.m+24,self.hook_x,self.hook_growth)
+                line(self.x+148,240,self.x+148,self.hook_growth+35)
+                stroke(204,153,0)
+                strokeWeight(2.5)
                 image(self.img1,self.x+130,self.m+28,40,40,716,0,0,773)
                 
                 self.x += self.boat_move
                 if self.key_handler[DOWN] and self.m < 600:
                 
                     self.m += self.vm
+                    # self.hook_x = 4
+                    self.hook_growth += self.vm
                 elif self.key_handler[UP] and self.m > 210:
                     self.m -= self.vm
+                    # self.hook_x -= 4
+                    self.hook_growth -= self.vm
                 else:
                     self.m = self.m
                 
             else:
                 image(self.img,self.x,self.y+7,150,150,503,0,0,537)
+                # line(self.x+146,240,self.x+146,self.hook_growth+35)
+                # stroke(0,0,0)
+                # strokeWeight(0.2)
+                
+            
+            
+                line(self.x+148,240,self.x+148,self.hook_growth+35)
+                stroke(204,153,60)
+                strokeWeight(2.5)
+                # line(self.x+150,240,self.x+150,self.hook_growth+35)
+                # stroke(0,0,0)
+                # strokeWeight(0.1)
                 image(self.img1,self.x+130,self.m+28,40,40,716,0,0,773)
+            
                 if self.key_handler[DOWN] and self.m < 600:
+                    
+                    # line(self.x,210,self.x,self.hook_growth)
+                    self.hook_growth += self.vm
                     self.m += self.vm
+                    
+                    # self.hook_size += 2
+                    # self.hook_x = 10
+                    
                 elif self.key_handler[UP] and self.m > 210:
                     self.m -= self.vm
+                    # self.hook_x = 4
+                    self.hook_growth -= self.vm
                 else:
                     self.m = self.m
+                    # self.hook_x = 0
+                    # self.hook_growth = 0
             self.a = self.x+130
             self.b = self.m +28
+# class Hook:
+#     def __init__(self):
+#         self.hook = Boat()
+#         self.x = self.hook.a
+#         self.y = self.hook.b
+#         self.vy = 0    
+#         self.img = loadImage(path + "/images/hook.png")
+#         self.Hook_N = 0
+        
+    
+#     def move(self):  
+        
+        
+#         # self.hook.vm
+#     # Display of the hook if it is not used 
+#     # if self.vy == 0:
+#     #     if game.boat.vx >=0:
+#     #         image(self.img, game.boat.x+264, game.boat.y+25,40,40)
+#     #     if game.boat.vx <0:
+#     #         image(self.img,game.boat.x-40,game.boat.y+12,40,40)
+    
+#     # Display of the hook if it is used                     
+#         if self.hook.vm == 10 or self.hook.vm == -10:
+#             self.y = self.y + self.hook.vm
+    
+#             self.Hook_N = int((self.y-210)//50)
+#             if self.hook.boat_move >0:
+             
+#                 for a in range(self.Hook_N):
+#                     image(loadImage(path + "/images/hook_line.png"),game.boat.x+284,self.y-1*a+20,5,5) # Parts (line) of the hook 
+#             elif elf.hook.boat_move < 0 :
+            
+#                 for a in range(self.Hook_N):
+#                     image(loadImage(path + "/images/hook_line.png"),game.boat.x-40,self.y-1*a+15,5,5) # Parts (line) of the hook 
+    
+    
+
+            
+            
 
 class Background: 
     def __init__(self,x,y):
