@@ -11,8 +11,9 @@ class Game:
         self.boat = Boat()
         self.cnt = 0 
         self.fish = []
+        self.fish_opposite = []
         self.score_fish = loadImage(path + "/fish_image/"+str(random.randint(0,10))+".png")
-        self.final_fish = loadImage(path + "/fish_image/final_background.jpg")
+        self.final_fish = loadImage(path + "/fish_image/final.jpg")
         self.snake = []
         # while self.alive:
         for i in range(3):
@@ -21,7 +22,9 @@ class Game:
         
     
         for i in range(12):
-            self.fish.append(Fish(random.randint(0,2000)+1100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,10))+".png")))
+            self.fish.append(Fish(random.randint(0,2000)+1100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image_1/"+str(random.randint(0,9))+".png")))
+    
+            self.fish_opposite.append(Fish(random.randint(-2000,0)-100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image_1/"+str(random.randint(0,9))+".png")))
             
     # def fish_eat(self):
     #     cnt = 0
@@ -111,6 +114,36 @@ class Game:
                     fish.r = 40
                     fish.v = 40
                     self.cnt += 1
+        for fish in self.fish_opposite:
+            m = int(self.boat.a)
+            n = int(self.boat.b)
+            # i = (int(fish.x) + int(fish.r))//2
+            # j = (int(fish.y) + int(fish.v))//2
+            i = int(fish.x)
+            j = int(fish.y)
+        
+            print(m,n,i,j)
+            distance_1 = (m - i)**2 
+            distance_2 = (n - j)**2
+            if distance_1 <= 400 and distance_2 <= 400:
+                
+                
+                fish.vx = 0
+                # fish.x = (cnt*100)
+                # fish.y = 0 
+                fish.r = 20
+                fish.v = 20
+                
+                fish.x = self.boat.a
+                fish.y = self.boat.b
+                if  fish.y <= 250:
+                    fish.x = (self.cnt*60)
+                    fish.y = 0 
+                    fish.r = 40
+                    fish.v = 40
+                    self.cnt += 1
+                    
+
             
         
         
@@ -132,6 +165,8 @@ class Game:
             self.boat.move_boat()
             for fish in self.fish:
                 fish.move_fish()
+            for fish in self.fish_opposite:
+                fish.move_fish_1()
             for snake in self.snake:
                 snake.move_fish()
             self.fish_eat()
@@ -191,7 +226,7 @@ class Boat:
                 image(self.img,self.x,self.y,150,150)
                 image(self.img1,self.x-20,self.m+24,40,40)
                 self.x -= self.boat_move
-                if self.key_handler[DOWN]:
+                if self.key_handler[DOWN] and self.m < 600:
                     self.m += self.vm
                 elif self.key_handler[UP] and self.m > 210:
                     self.m -= self.vm
@@ -200,7 +235,7 @@ class Boat:
             else:
                 image(self.img,self.x,self.y,150,150)
                 image(self.img1,self.x-20,self.m+24,40,40)
-                if self.key_handler[DOWN]:
+                if self.key_handler[DOWN] and self.m < 600:
                     self.m += self.vm
                 elif self.key_handler[UP] and self.m > 210:
                     self.m -= self.vm
@@ -219,7 +254,7 @@ class Boat:
                 image(self.img1,self.x+130,self.m+28,40,40,716,0,0,773)
                 
                 self.x += self.boat_move
-                if self.key_handler[DOWN]:
+                if self.key_handler[DOWN] and self.m < 600:
                 
                     self.m += self.vm
                 elif self.key_handler[UP] and self.m > 210:
@@ -230,7 +265,7 @@ class Boat:
             else:
                 image(self.img,self.x,self.y+7,150,150,503,0,0,537)
                 image(self.img1,self.x+130,self.m+28,40,40,716,0,0,773)
-                if self.key_handler[DOWN]:
+                if self.key_handler[DOWN] and self.m < 600:
                     self.m += self.vm
                 elif self.key_handler[UP] and self.m > 210:
                     self.m -= self.vm
@@ -295,6 +330,10 @@ class Fish:
         self.fish_size()  
         image(self.img,self.x,self.y,self.r,self.v)
         self.x -= self.vx
+    def move_fish_1(self): 
+        self.fish_size()  
+        image(self.img,self.x,self.y,self.r,self.v,40,0,0,40)
+        self.x += self.vx
         # self.hook.x = 400
         # self.hook.m = 500
         # image(self.image,self.mn,self.kl,150,150)
