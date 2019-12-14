@@ -21,10 +21,13 @@ class Game:
         self.score_fish = loadImage(path + "/fish_image_1/Fish_left/1.png") # Initialization of the fish image on upper right corner 
         self.final_fish = loadImage(path + "/fish_image/"+str(random.randint(0,5))+".jpg") # Display of the final image 
         self.snake = []
+        self.snake_1 = []
     
         for i in range(7): # spawning the snake that can end the game 
-            self.snake.append(Fish(random.randint(0,1000)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(1,3))+".png")))
-            self.snake.append(Fish(random.randint(1000,6000)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(1,3))+".png")))
+            self.snake.append(Fish(random.randint(0,1000)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(2,3))+".png")))
+            self.snake.append(Fish(random.randint(1000,6000)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(2,3))+".png")))
+            self.snake_1.append(Fish(random.randint(-2000,0)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/1.png")))
+        
         
         
     
@@ -116,10 +119,6 @@ class Game:
             distance_1 = (m - i)**2 # Calculation of the distance between fish and hook
             distance_2 = (n - j)**2
             if distance_1 <= 400 and distance_2 <= 400:
-                self.background_sound = player.loadFile(path + "/sounds/fish_caught.mp3")
-                self.background_sound.rewind()
-                self.background_sound.play()
-                
                 
                 fish.vx = 0 # Stop the fish from moving horizontally 
                 fish.r = 20 # Pulling the fish up 
@@ -154,6 +153,8 @@ class Game:
                 fish.move_fish_1()
             for snake in self.snake:
                 snake.move_fish()
+            for snake in self.snake_1:
+                snake.move_fish_1()
             self.fish_eat() # function that makes the fish able to be pulled 
             fill(140,23,190)
             textSize(50)
@@ -327,8 +328,8 @@ class Fish: # Spawning of the fish
         self.x -= self.vx 
     def move_fish_1(self): 
         self.fish_size()  
-        image(self.img,self.x,self.y,self.r+10,self.v+10) # display of the snake 
-        self.x += 1 
+        image(self.img,self.x,self.y,self.r,self.v) # display of the snake 
+        self.x += self.vx 
 
 game = Game()
 
