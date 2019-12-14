@@ -1,7 +1,7 @@
-# add_library('minim')
+add_library('minim')
 import os, random
 path = os.getcwd()
-# player = Minim(this)
+player = Minim(this)
 
 
 
@@ -18,19 +18,21 @@ class Game:
         self.cnt = 0 
         self.fish = [] # Have fish from both direction
         self.fish_opposite = [] # Have fish from both direction
-        self.score_fish = loadImage(path + "/fish_image/"+str(random.randint(0,10))+".png") # Initialization of the fish image on upper right corner 
-        self.final_fish = loadImage(path + "/fish_image/final_background.jpg") # Display of the final image 
+        self.score_fish = loadImage(path + "/fish_image_1/Fish_left/1.png") # Initialization of the fish image on upper right corner 
+        self.final_fish = loadImage(path + "/fish_image/"+str(random.randint(0,5))+".jpg") # Display of the final image 
         self.snake = []
     
-        for i in range(3): # spawning the snake that can end the game 
-            self.snake.append(Fish(random.randint(0,2000)+800,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(1,2))+".png")))
+        for i in range(7): # spawning the snake that can end the game 
+            self.snake.append(Fish(random.randint(0,1000)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(1,3))+".png")))
+            self.snake.append(Fish(random.randint(1000,6000)+1100*i,random.randint(350,600),loadImage(path + "/snake_image/"+str(random.randint(1,3))+".png")))
         
         
     
-        for i in range(20): # Spawning the fish from both side 
-            self.fish.append(Fish(random.randint(0,2000)+1100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,9))+".png")))
+        for i in range(7): # Spawning the fish from both side 
+            self.fish.append(Fish(random.randint(0,2000)+1100*random.randint(0,4),random.randint(350,600),loadImage(path + "/fish_image_1/Fish_right/"+str(random.randint(1,11))+".png")))
+            self.fish.append(Fish(random.randint(2000,6000)+1100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image_1/Fish_right/more_fish/"+str(random.randint(1,5))+".jpg")))
     
-            self.fish_opposite.append(Fish(random.randint(-2000,0)-100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image/"+str(random.randint(0,9))+".png")))
+            self.fish_opposite.append(Fish(random.randint(-2000,0)-100*random.randint(1,4),random.randint(350,600),loadImage(path + "/fish_image_1/Fish_left/"+str(random.randint(1,4))+".png")))
             
 # function of snake (end game) 
     def snake_kill(self):
@@ -53,6 +55,9 @@ class Game:
                 
 # Display of the background when game ends         
     def final_background(self):
+        self.background_sound = player.loadFile(path + "/sounds/game_end.mp3")
+        self.background_sound.rewind()
+        self.background_sound.play()
         image(self.final_fish,0,0,1200,700)
     
         fill(190,10,100)
@@ -80,6 +85,9 @@ class Game:
             distance_1 = (m - i)**2 # Calculation of the distance between fish and hook 
             distance_2 = (n - j)**2
             if distance_1 <= 400 and distance_2 <= 400:
+                '''self.background_sound = player.loadFile(path + "/sounds/fish_caught.mp3")
+                self.background_sound.rewind()
+                self.background_sound.play()'''
                 
                 
                 fish.vx = 0 # Stop the fish from moving horizontally 
@@ -90,6 +98,9 @@ class Game:
                 fish.x = self.boat.a
                 fish.y = self.boat.b
                 if  fish.y <= 250: # Moving up of the score 
+                    self.background_sound = player.loadFile(path + "/sounds/fish_caught.mp3")
+                    self.background_sound.rewind()
+                    self.background_sound.play()
                     fish.x = (self.cnt*60)
                     fish.y = 0 
                     fish.r = 40
@@ -105,6 +116,9 @@ class Game:
             distance_1 = (m - i)**2 # Calculation of the distance between fish and hook
             distance_2 = (n - j)**2
             if distance_1 <= 400 and distance_2 <= 400:
+                self.background_sound = player.loadFile(path + "/sounds/fish_caught.mp3")
+                self.background_sound.rewind()
+                self.background_sound.play()
                 
                 
                 fish.vx = 0 # Stop the fish from moving horizontally 
@@ -114,6 +128,9 @@ class Game:
                 fish.x = self.boat.a
                 fish.y = self.boat.b
                 if  fish.y <= 250:
+                    self.background_sound = player.loadFile(path + "/sounds/fish_caught.mp3")
+                    self.background_sound.rewind()
+                    self.background_sound.play()
                     fish.x = (self.cnt*60)
                     fish.y = 0 
                     fish.r = 40
@@ -125,7 +142,6 @@ class Game:
         if self.alive == False:
             self.final_background() # display of the final background when game ends 
         else:
-        
         
             self.background_img.show_background() # display of the upper part of the screen (sky) 
             self.river.move_river() # display of the lower part of the screen (ocean)
@@ -156,9 +172,9 @@ class River:
         
     def move_river(self):
         
-        # self.background_sound = player.loadFile(path + "/sounds/river_sound.mp3")
-        # self.background_sound.rewind()
-        # self.background_sound.play()
+        self.background_sound = player.loadFile(path + "/sounds/river_flow.mp3")
+        self.background_sound.rewind()
+        self.background_sound.play()
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x,self.y,1200,380) # display of the river by random selcetion 
         image(loadImage(path + "/images/"+str(self.img_num)+".jpg"),self.x+1100,self.y,1200,380)
         
@@ -171,7 +187,7 @@ class Boat:
     def __init__(self):
         self.img = loadImage(path +"/images/fisherman.png") # Image for the fisherman 
         self.img1 = loadImage(path+"/images/hook.png") # Image for the hook 
-        self.hook_line = loadImage(path+"/images/hook_line.png")
+        # self.hook_line = loadImage(path+"/images/hook_line.png")
         self.hook_growth = 210 # the initial height of the hook on boat 
         self.hook_x = 10
         self.hm = 2
@@ -250,7 +266,7 @@ class Boat:
                 else:
                     self.m = self.m
                 
-            else:# If the fishermnan are near the edge of the screen, stop the movement of the fisherman, everything else same as above 
+            else:# to stop fisherman going away from screen 
                 image(self.img,self.x,self.y+7,150,150,503,0,0,537)
                 line(self.x+148,240,self.x+148,self.hook_growth+35)
                 stroke(204,153,60)
@@ -288,7 +304,7 @@ class Background:
         self.x -= 50 # movement of the river 
         if self.x <= -1200:
             self.x = 0
-            self.img_num = random.randint(1,14) # Random display of imgae 
+            self.img_num = random.randint(1,16) # Random display of imgae 
 
 
 class Fish: # Spawning of the fish 
@@ -296,23 +312,23 @@ class Fish: # Spawning of the fish
         self.x = x
         self.y = y
         self.img = img
-        self.vx = random.randint(1,2)
+        self.vx = random.randint(1,6)
         self.r = 0
         self.v = 0
         
-    def fish_size(self):
+    def fish_size(self): 
         if self.y != 0:
-            self.r = random.randint(45,65)
+            self.r = random.randint(45,65) #change the body size, to create illution of fish is alive
             self.v = random.randint(45,65)
             
     def move_fish(self):  # let the fish move 
         self.fish_size()  
         image(self.img,self.x,self.y,self.r,self.v)
-        self.x -= self.vx # make the fish move up 
-    def move_fish_1(self): # let the fish move down
+        self.x -= self.vx 
+    def move_fish_1(self): 
         self.fish_size()  
-        image(self.img,self.x,self.y,self.r,self.v,40,0,0,40) # display of the fish 
-        self.x += self.vx # make the fish move up
+        image(self.img,self.x,self.y,self.r+10,self.v+10) # display of the snake 
+        self.x += 1 
 
 game = Game()
 
